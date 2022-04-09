@@ -1,0 +1,36 @@
+body {
+    background-color: #000000;
+    color: #FFFFFF;
+    text-align: left;
+}
+
+header {
+    background-color: #000000;
+    color: #FFFFFF;
+    text-align: center;
+}
+
+footer {
+    background-color: #FFFFFF;
+    color: #000000;
+    text-align: center;
+    position : absolute;
+    bottom: 0;
+    width: 100%;
+    height : 2em;
+}
+
+.centered {
+    text-align: center;
+}
+
+.clockStyle {
+    font-size: 4em;
+    text-decoration: bold;
+}
+
+.tempStyle {
+    font-size: 2em;
+}
+
+/* Ryian Hunter */
