@@ -43,18 +43,26 @@
                     .then( data =>
                         {
                             var currTemp = data.properties.temperature.value;
-                            currTemp = currTemp*(9.0/5.0) + 32.0; // Convert from celcius to ferenheight
-                            weather.innerHTML = `${currTemp.toFixed(1)} &#176F`;
-                            if (currTemp > 80.0)
+                            if (currTemp != null)
                             {
-                                weather.style.color = "red";
-                            }
-                            else if (currTemp < 68)
-                            {
-                                weather.style.color = "blue";
+                                currTemp = currTemp*(9.0/5.0) + 32.0; // Convert from celcius to ferenheight
+                                weather.innerHTML = `${currTemp.toFixed(1)} &#176F`;
+                                if (currTemp > 80.0)
+                                {
+                                    weather.style.color = "red";
+                                }
+                                else if (currTemp < 68)
+                                {
+                                    weather.style.color = "blue";
+                                }
+                                else
+                                {
+                                    weather.style.color = "white";
+                                }
                             }
                             else
                             {
+                                weather.innerHTML = 'Temperature Unavailable';
                                 weather.style.color = "white";
                             }
                         }
