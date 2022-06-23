@@ -12,6 +12,7 @@
             document.addEventListener('DOMContentLoaded', function() {
                 var clock = document.querySelector('.clock');
                 var weather = document.querySelector('.weather')
+                var forecast = document.querySelector('.forecast')
                 // Define function to pull and set time
                 function SetClock()
                 {
@@ -68,10 +69,54 @@
                         }
                     )
                 }
+                // Define function to pull forecast data via API
+                // https://api.weather.gov/gridpoints/TWC/99,48/forecast/hourly
+                // Lots of work to do here, but this works so far
+                function SetForecast()
+                {
+                    fetch('https://api.weather.gov/gridpoints/TWC/99,48/forecast/hourly')
+                    .then(response => response.json())
+                    .then( data =>
+                        {
+                            forecast.innerHTML = '';
+                            var hoursLast = 0;
+                            var now = new Date();
+                            var forecastRaw = data.properties.periods;
+                            var tempStr = '';
+                            for (i = 0; i < 24; i++)
+                            {
+                                var time = new Date(forecastRaw[i].startTime);
+                                if ((time.getHours() > hoursLast) && (time.getHours() >= now.getHours()))
+                                {
+                                    hoursLast = time.getHours();
+                                    if (forecastRaw[i].temperature > 80.0)
+                                    {
+                                        forecast.innerHTML += "<div><table><tr><td>" + time.getHours() + "00</td></tr><tr><td style=\"color:red\">" + forecastRaw[i].temperature + " &#176" + forecastRaw[i].temperatureUnit + "</td></tr></table></div>\n";
+                                    }
+                                    else if (forecastRaw[i].temperature < 68.0)
+                                    {
+                                        forecast.innerHTML += "<div><table><tr><td>" + time.getHours() + "00</td></tr><tr><td style=\"color:blue\">" + forecastRaw[i].temperature + " &#176" + forecastRaw[i].temperatureUnit + "</td></tr></table></div>\n";
+                                    }
+                                    else
+                                    {
+                                        forecast.innerHTML += "<div><table><tr><td>" + time.getHours() + "00</td></tr><tr><td style=\"color:white\">" + forecastRaw[i].temperature + " &#176" + forecastRaw[i].temperatureUnit + "</td></tr></table></div>\n";
+                                    }
+                                }
+                                else if (time.getHours() <= hoursLast)
+                                {
+                                    break;
+                                }
+                            }
+                            forecast.style.color = "white";
+                        }
+                    )
+                }
                 SetClock();
                 SetTemp();
+                SetForecast();
                 setInterval(SetClock, 100);
-                setInterval(SetTemp, 60000)
+                setInterval(SetTemp, 60000);
+                setInterval(SetForecast,1800000);
             });
 
 
@@ -81,9 +126,10 @@
         <br>
         <div class="centered clock clockStyle"></div>
         <br>
-        <div class="centered weather tempStyle">
+        <div class="centered weather tempStyle"></div>
+        <br>
+        <div class="centered container forecast forecastStyle"></div>
 
-        </div>
         <br>
         <div class="centered searches">
             <form action="https://www.duckduckgo.com" method="get" target="_blank">
