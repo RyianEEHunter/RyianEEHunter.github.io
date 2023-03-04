@@ -119,6 +119,7 @@
 		HTML5 canvas appears to be unsupported in the current browser.<br />
 		Please try updating or use a different browser.
 	</canvas>
+	<button id="startButton">Click to Start</button>
 	<div id='status'>
 		<div id='status-progress' style='display: none;' oncontextmenu='event.preventDefault();'><div id ='status-progress-inner'></div></div>
 		<div id='status-indeterminate' style='display: none;' oncontextmenu='event.preventDefault();'>
@@ -138,9 +139,10 @@
 	<script type='text/javascript'>//<![CDATA[
 
 		const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"executable":"NoiseGenerator","experimentalVK":false,"fileSizes":{"NoiseGenerator.pck":30176,"NoiseGenerator.wasm":13789463},"focusCanvas":true,"gdnativeLibs":[]};
+		const startButton = document.getElementById('startButton');
 		var engine = new Engine(GODOT_CONFIG);
 
-		(function() {
+		function startLoad() {
 			const INDETERMINATE_STATUS_STEP_MS = 100;
 			var statusProgress = document.getElementById('status-progress');
 			var statusProgressInner = document.getElementById('status-progress-inner');
@@ -239,7 +241,12 @@
 					initializing = false;
 				}, displayFailureNotice);
 			}
-		})();
+		};
+		
+		startButton.addEventListener('click', () => {
+			startButton.style.display = 'none';
+			startLoad();
+		})
 	//]]></script>
 </body>
 </html>
